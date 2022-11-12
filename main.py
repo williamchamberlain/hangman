@@ -20,6 +20,7 @@ pygame.display.set_caption("Hangman by Will C")
 
 LETTER_FONT = pygame.font.SysFont('comicsans', 40) #font for letters 
 WORD_FONT = pygame.font.SysFont('comicsans', 60)
+TITLE_FONT= pygame.font.SysFont('comicsans', 70)
 
 #BUTTON VARIABLES
 
@@ -49,8 +50,9 @@ for i in range(7): #load in 6 images (use 7 because it's up to 7)
   
 #GAME VARIABLES 
 hangman_status = 0 #what image is needed
-word="COLLEGE"
-guessed=[""] #what letters the player has guessed 
+words=["COLLEGE","PYTHON","CODING","IDLE","PYGAME"]
+word = random.choice(words)
+guessed = [] #what letters the player has guessed 
 
 
 
@@ -60,7 +62,8 @@ guessed=[""] #what letters the player has guessed
 
 def draw(): #for the circle
   win.fill((WHITE)) #fills white
-
+  text = TITLE_FONT.render("PYGAME HANGMAN!",1,BLACK)
+  win.blit(text, (WIDTH/2 - text.get_width()/2, 20))
 
   #DRAW LETTERS 
   display_word = ""
@@ -96,7 +99,14 @@ def draw(): #for the circle
 
 
 
-
+def display_message(message): #brakcets pass through
+  pygame.time.delay(1000)
+  win.fill(WHITE)
+  text = WORD_FONT.render(message, 1, BLACK)
+  win.blit(text, (WIDTH/2 - text.get_width()/2, HEIGHT/2 -text.get_height()/2)) #centre equation
+  pygame.display.update()
+  pygame.time.delay(3000)
+  
 
 
 
@@ -109,8 +119,6 @@ run = True #for while loop
 
 while run: #while run is true (playing)
   clock.tick(FPS) 
-
-  draw()
  
   for event in pygame.event.get(): #any event stored in here 
       if event.type == pygame.QUIT: 
@@ -127,7 +135,9 @@ while run: #while run is true (playing)
               guessed.append(ltr)
               if ltr not in word:
                 hangman_status += 1
-          
+  draw()
+
+  
   won = True
 
     
@@ -137,11 +147,12 @@ while run: #while run is true (playing)
       break
         
   if won:
-    print("won")
+    display_message("You win!")
     break
+    
 
   if hangman_status == 6:
-    print("lost")
+    display_message("You lost")
     break
       
         #if the mouse is less than the radius away from centre there is no collision
